@@ -16,6 +16,8 @@ RUN apt -y install python3-pip npm libopenblas-dev \
 && pip3 install --no-cache notebook numpy scipy matplotlib jupyterhub \
 && jupyterhub --generate-config
 
+RUN apt install -y libcurl4-openssl-dev libssl-dev && pip3 install pycurl
+
 # Install kernels
 # https://groups.google.com/forum/#!topic/sage-devel/RuWNK52yGYg
 RUN echo '{\n "display_name": "SageMath 8.9",\n "language": "sage",\n "argv": ["/opt/SageMath/local/bin/sage", "--python", "-m", "sage.repl.ipython_kernel", "-f", "{connection_file}"],\n "env": {"SAGE_ROOT": "/opt/SageMath"}\n}' > /opt/SageMath/local/share/jupyter/kernels/sagemath/kernel.json \
