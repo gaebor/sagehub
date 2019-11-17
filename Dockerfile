@@ -21,8 +21,8 @@ RUN apt install -y libcurl4-openssl-dev libssl-dev libopenblas-dev && pip3 insta
 
 # Install kernels
 # https://groups.google.com/forum/#!topic/sage-devel/RuWNK52yGYg
-RUN python -c 'import json\nfilename="/opt/SageMath/local/share/jupyter/kernels/sagemath/kernel.json"\nwith open(filename, "r") as f:\n x=json.loads(f.read())\nx["env"] = {"SAGE_ROOT": "/opt/SageMath"}\nwith open(filename, "w") as f:\n json.dump(x, f)' \
-&& python -c 'import json\nfilename="/opt/SageMath/local/share/jupyter/kernels/python2/kernel.json"\nwith open(filename, "r") as f:\n x=json.loads(f.read())\nx["argv"][0] = "/opt/SageMath/local/bin/python"\nwith open(filename, "w") as f:\n json.dump(x, f)' \
+RUN echo 'import json\nfilename="/opt/SageMath/local/share/jupyter/kernels/sagemath/kernel.json"\nwith open(filename, "r") as f:\n x=json.loads(f.read())\nx["env"] = {"SAGE_ROOT": "/opt/SageMath"}\nwith open(filename, "w") as f:\n json.dump(x, f)' | python \
+&& echo 'import json\nfilename="/opt/SageMath/local/share/jupyter/kernels/python2/kernel.json"\nwith open(filename, "r") as f:\n x=json.loads(f.read())\nx["argv"][0] = "/opt/SageMath/local/bin/python"\nwith open(filename, "w") as f:\n json.dump(x, f)' | python \
 && ln -s /opt/SageMath/local/share/jupyter/kernels/sagemath /usr/local/share/jupyter/kernels/sagemath \
 && ln -s /opt/SageMath/local/share/jupyter/kernels/python2 /usr/local/share/jupyter/kernels/python2
 
