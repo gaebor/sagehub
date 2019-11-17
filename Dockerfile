@@ -11,17 +11,18 @@ bsdtar -xjf - \
 && echo 2+2 | /opt/SageMath/sage
 
 # Jupyterhub
-RUN apt -y install python3-pip npm libopenblas-dev \ 
+RUN apt -y install python3-pip npm \ 
 && npm install -g configurable-http-proxy \
-&& pip3 install --no-cache notebook numpy scipy matplotlib jupyterhub \
+&& pip3 install --no-cache notebook jupyterhub \
 && jupyterhub --generate-config
 
-RUN apt install -y libcurl4-openssl-dev libssl-dev && pip3 install pycurl
+# Optionals
+RUN apt install -y libcurl4-openssl-dev libssl-dev libopenblas-dev && pip3 install pycurl numpy scipy matplotlib
 
 # Install kernels
 # https://groups.google.com/forum/#!topic/sage-devel/RuWNK52yGYg
-RUN echo '{\n "display_name": "SageMath 8.9",\n "language": "sage",\n "argv": ["/opt/SageMath/local/bin/sage", "--python", "-m", "sage.repl.ipython_kernel", "-f", "{connection_file}"],\n "env": {"SAGE_ROOT": "/opt/SageMath"}\n}' > /opt/SageMath/local/share/jupyter/kernels/sagemath/kernel.json \
-&& echo '{\n "display_name": "Python 2",\n "language": "python",\n "argv": ["/opt/SageMath/local/bin/python", "-m",   "ipykernel_launcher", "-f", "{connection_file}"]\n}' > /opt/SageMath/local/share/jupyter/kernels/python2/kernel.json \
+RUN python -c 'import json\nfilename="/opt/SageMath/local/share/jupyter/kernels/sagemath/kernel.json"\nwith open(filename, "r") as f:\n x=json.loads(f.read())\nx["env"] = {"SAGE_ROOT": "/opt/SageMath"}\nwith open(filename, "w") as f:\n json.dump(x, f)' \
+&& python -c 'import json\nfilename="/opt/SageMath/local/share/jupyter/kernels/python2/kernel.json"\nwith open(filename, "r") as f:\n x=json.loads(f.read())\nx["argv"][0] = "/opt/SageMath/local/bin/python"\nwith open(filename, "w") as f:\n json.dump(x, f)' \
 && ln -s /opt/SageMath/local/share/jupyter/kernels/sagemath /usr/local/share/jupyter/kernels/sagemath \
 && ln -s /opt/SageMath/local/share/jupyter/kernels/python2 /usr/local/share/jupyter/kernels/python2
 
