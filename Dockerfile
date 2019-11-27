@@ -17,7 +17,10 @@ RUN apt -y install python3-pip npm \
 && jupyterhub --generate-config
 
 # Optionals
-RUN apt install -y libcurl4-openssl-dev libssl-dev libopenblas-dev && pip3 install pycurl numpy scipy matplotlib
+RUN apt install -y libcurl4-openssl-dev libssl-dev libopenblas-dev default-jre \
+&& pip3 install pycurl numpy scipy matplotlib ipywidgets \
+&& jupyter nbextension enable --py --system widgetsnbextension \
+&& /opt/SageMath/sage -pip install --upgrade ipywidgets
 
 # Install kernels
 # https://groups.google.com/forum/#!topic/sage-devel/RuWNK52yGYg
