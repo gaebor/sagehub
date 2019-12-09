@@ -33,4 +33,7 @@ RUN apt install -y libcurl4-openssl-dev libssl-dev libopenblas-dev \
 # TODO
 # jsmol/threejs/plot3d in sage (tachyon)
 
-CMD ["jupyterhub"]
+EXPOSE 8000
+
+CMD ["jupyterhub", "--port=8000"]
+
