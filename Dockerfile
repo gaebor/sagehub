@@ -30,10 +30,8 @@ RUN apt install -y libcurl4-openssl-dev libssl-dev libopenblas-dev \
 && /opt/SageMath/sage -pip install --upgrade ipywidgets \
 && pip3 install jupyter_contrib_nbextensions && jupyter contrib nbextension install --system
 
-# TODO
-# jsmol/threejs/plot3d in sage (tachyon)
+# Permissions
+RUN mkdir -p /etc/jupyter && echo 'import os; os.umask(0o077)' > /etc/jupyter/jupyter_notebook_config.py \
+&& echo 'umask 077' | cat - /etc/profile > /etc/profile.new && mv /etc/profile.new /etc/profile
 
-EXPOSE 8000
-
-CMD ["jupyterhub", "--port=8000"]
-
+CMD ["jupyterhub"]
