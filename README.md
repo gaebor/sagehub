@@ -6,13 +6,11 @@ This [ubuntu](https://ubuntu.com/) based image provides a jupyterhub server with
   * numpy
   * scipy
   * matplotlib
-  * with `pip3`
+  * you can `python3 -m pip tensorflow --user`
 * Python 2.7
-  * not a system-wide installation! it is from Sage
-  * with all the packages from Sage
-  * you cannot `pip` it!
-  * but you can [`sage -pip`](https://ask.sagemath.org/question/10978/how-to-upgrade-a-python-package-with-pip/)
+  * you can `python2 -m pip tensorflow --user`
 * SageMath 8.9
+* SageMath 9.1
 
 It is (almost) ready to deploy as a classroom server.
 
@@ -30,5 +28,5 @@ Although some basic security measures are taken care of:
 * default umask is `077` system-wide and within jupyter also
 
 ## Issues
-* 3D plots do not work properly
-* `var('x y'); plot3d(x^2+y^3,(x,-1,1), (y,-1,1), viewer='tachyon')` works
+* 3D plots are not interactive in Sage 8.9
+* use `var('x y'); plot3d(x^2+y^3,(x,-1,1), (y,-1,1), viewer='tachyon')`
